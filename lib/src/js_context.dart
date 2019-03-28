@@ -14,7 +14,6 @@ class ExecutionContext {
 
   static Future<ExecutionContext> create(Tab tab) async {
     var executionContext = tab.runtime.onExecutionContextCreated.first;
-    await tab.runtime.enable();
     ExecutionContextId contextId = (await executionContext).id;
 
     return ExecutionContext(tab.runtime, contextId);

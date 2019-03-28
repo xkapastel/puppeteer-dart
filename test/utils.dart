@@ -10,8 +10,6 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 Future waitForLog(Tab tab, String logToContain) async {
-  await tab.log.enable();
-
   await for (LogEntry log in tab.log.onEntryAdded) {
     if (log.text.contains(logToContain)) {
       return;

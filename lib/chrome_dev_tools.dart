@@ -99,6 +99,7 @@ class Chrome {
 
   static final RegExp _devToolRegExp =
       RegExp(r'^DevTools listening on (ws:\/\/.*)$');
+
   static Future _waitForWebSocketUrl(Process chromeProcess) async {
     await for (String line in chromeProcess.stderr
         .transform(Utf8Decoder())
@@ -124,7 +125,14 @@ class Chrome {
     Session session =
         await connection.createSession(targetId, browserContextID: contextID);
 
-    return Tab(session);
+    var tab = Tab(session);
+    await Future.wait([
+      tab.network.enable(),
+      tab.log.enable(),
+      tab.runtime.enable(),
+    ]);
+
+    return tab;
   }
 
   Future closeAllTabs() async {
