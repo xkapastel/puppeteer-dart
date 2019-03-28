@@ -1,15 +1,26 @@
 import 'dart:async';
+
+import 'package:chrome_dev_tools/src/js_context.dart';
+
 import '../domains/runtime.dart';
 import 'connection.dart';
 import 'tab_mixin.dart';
 import 'wait_until.dart' as helper;
 import 'remote_object.dart' as helper;
+import 'keyboard.dart';
+
+export 'keyboard.dart' show Key, KeyLocation;
 
 class Tab extends Object with TabMixin {
   @override
   final Session session;
+  Keyboard _keyboard;
 
-  Tab(this.session);
+  Tab(this.session) {
+    _keyboard = Keyboard(input);
+  }
+
+  Keyboard get keyboard => _keyboard;
 
   Future waitUntilNetworkIdle(
           {Duration idleDuration = const Duration(milliseconds: 1000),
@@ -38,5 +49,9 @@ class Tab extends Object with TabMixin {
 
     dynamic value = await remoteObject(object);
     return value;
+  }
+
+  Future<ExecutionContext> executionContext() {
+    return ExecutionContext.create(this);
   }
 }

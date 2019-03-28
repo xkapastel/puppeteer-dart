@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:chrome_dev_tools/chrome_dev_tools.dart';
 import 'package:chrome_dev_tools/chrome_downloader.dart';
 import 'package:logging/logging.dart';
-import 'package:shelf_static/shelf_static.dart';
-import 'package:shelf/shelf_io.dart' as io;
 
 main() async {
   Logger.root.level = Level.ALL;
@@ -45,7 +42,5 @@ main() async {
     } finally {
       await chrome.close();
     }
-  } finally {
-    await server.close();
-  }
+  });
 }
